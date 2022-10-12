@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'location_services.dart';
 
+// TODO get a belling account for google maps so u can work with their APIs
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
