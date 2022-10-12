@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'location_services.dart';
 
 void main() => runApp(const MyApp());
 
@@ -49,43 +50,107 @@ class MapSampleState extends State<MapSample> {
       target: LatLng(37.43296265331129, -122.08832357078792),
       tilt: 59.440717697143555,
       zoom: 19.151926040649414);
-
+  List<LatLng> latLngVals = [];
   static const Polyline _kPolyline =
       Polyline(polylineId: PolylineId('_kPolyline'), width: 5, points: [
     LatLng(37.42796133580664, -122.085749655962),
     LatLng(37.43296265331129, -122.08832357078792)
   ]);
 
-  static const Polygon _kPolygon = Polygon(
-      polygonId: PolygonId('_kPolygon'),
-      fillColor: Colors.transparent,
-      strokeWidth: 5,
-      points: [
-        LatLng(37.42796133580664, -122.085749655962),
-        LatLng(37.43296265331129, -122.08832357078792),
-        LatLng(37.44296265331129, -122.08632357078792),
-        LatLng(37.42796133580664, -122.080749655962),
-      ]);
+  // Polygon _kPolygon = Polygon(
+  //     polygonId: PolygonId('_kPolygon'),
+  //     fillColor: Colors.transparent,
+  //     strokeWidth: 5,
+  //     points: [
+  // LatLng(37.42796133580664, -122.085749655962),
+  // LatLng(37.43296265331129, -122.08832357078792),
+  // LatLng(37.44296265331129, -122.08632357078792),
+  // LatLng(37.42796133580664, -122.080749655962),
+  // ]);
+
+  Set<Marker> markers = {};
+  Set<Polygon> _polygons = {};
+
+  final TextEditingController _kDestinationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GoogleMap(
-        // markers: {_kLakeMarker, _kGooglePlexMarker},
-        // polylines: {_kPolyline},
-        // polygons: {_kPolygon},
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            // Expanded(
+            TextField(
+              decoration: const InputDecoration(hintText: 'Destination'),
+              controller: _kDestinationController,
+              onChanged: (text) {
+                print('text: $text');
+                print(_kDestinationController.text);
+              },
+              onSubmitted: ((value) async {
+                // await LocationServices.getPlaceId(_kDestinationController.text);
+                Map<String, dynamic> placeDetails =
+                    await LocationServices.getPlace(value);
+                // print(placeDetails);
+                _goToPlace(placeDetails);
+              }),
+            ),
+            // ),
+            Expanded(
+              child: GoogleMap(
+                // markers: {_kLakeMarker, _kGooglePlexMarker},
+                // polylines: {_kPolyline},
+                // polygons: {_kPolygon},
+                polygons: _polygons,
+                markers: markers,
+                mapType: MapType.hybrid,
+                initialCameraPosition: _kGooglePlex,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                onTap: (point) {
+                  latLngVals.add(point);
+                  setPolygon();
+                  setState(() {});
+                  print(_polygons);
+                },
+              ),
+            ),
+          ],
+        ),
+        // floatingActionButton: FloatingActionButton.extended(
+        //   onPressed: _goToTheLake,
+        //   label: const Text('To the lake!'),
+        //   icon: const Icon(Icons.directions_boat),
+        // ),
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: _goToTheLake,
-      //   label: const Text('To the lake!'),
-      //   icon: const Icon(Icons.directions_boat),
-      // ),
     );
+  }
+
+  Future<void> _goToPlace(Map<String, dynamic> place) async {
+    final double lat = place['geometry']['location']['lat'];
+    final double lng = place['geometry']['location']['lng'];
+    final LatLng latLng = LatLng(lat, lng);
+
+    markers.clear();
+    markers.add(Marker(markerId: MarkerId('markerId'), position: latLng));
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: latLng, zoom: 12)));
+  }
+
+  int polygonCounter = 0;
+  void setPolygon() {
+    Polygon polygon = Polygon(
+        polygonId: PolygonId('poly$polygonCounter'),
+        points: latLngVals,
+        strokeWidth: 2,
+        fillColor: Colors.transparent);
+
+    polygonCounter++;
+
+    _polygons.clear();
+    _polygons.add(polygon);
   }
 
   // Future<void> _goToTheLake() async {
