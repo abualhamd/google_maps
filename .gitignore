@@ -45,3 +45,4 @@ app.*.map.json
 lib/app/api_keys.dart
 android/app/src/main/AndroidManifest.xml
 android/app/src/main/AndroidManifest.xml
+.env

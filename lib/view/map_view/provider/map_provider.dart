@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps/app/api_keys.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +16,7 @@ class MapProvider with ChangeNotifier {
   static MapProvider get(BuildContext context) =>
       Provider.of<MapProvider>(context);
   // Enter your google maps api key
-  final _apiKey = ApiKeys.googleApiKey;
+  final _apiKey = FlutterConfig.get('GOOGLE_MAPS_API_KEY');//ApiKeys.googleApiKey;
 
   final Completer<GoogleMapController> mapController = Completer();
   final NetworkInfo _networkInfo;
@@ -42,7 +42,7 @@ class MapProvider with ChangeNotifier {
     });
     http.Response response = await http.get(uri);
     Map<String, dynamic> json = jsonDecode(response.body);
-
+    // TODO add try catch
     return json['candidates'][0]['place_id'];
   }
 

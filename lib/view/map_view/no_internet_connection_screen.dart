@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_maps/app/utils/app_strings.dart';
 
 class NoInternetConnectionScreen extends StatelessWidget {

@@ -32,6 +32,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_config: ^2.0.0
+  flutter_dotenv: ^5.0.2
   flutter_polyline_points: ^1.0.0
   flutter_speed_dial: ^6.2.0
   geolocator: ^9.0.2
@@ -57,7 +59,7 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   # assets:
-  #   - images/a_dot_burr.jpeg
+  #   - .env
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

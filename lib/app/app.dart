@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../view/map_view/provider/map_provider.dart';
 import '../view/map_view/map_screen.dart';
 import 'package:google_maps/injection_container.dart' as di;
+import 'package:flutter_config/flutter_config.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
