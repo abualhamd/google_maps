@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps/app/extensions/material_color_extension.dart';
-import 'package:google_maps/app/utils/colors_manager.dart';
+import 'package:google_maps/app/core/extensions/material_color_extension.dart';
+import 'package:google_maps/app/core/utils/colors_manager.dart';
 
 abstract class AppThemes {
   static ThemeData lightTheme = ThemeData(

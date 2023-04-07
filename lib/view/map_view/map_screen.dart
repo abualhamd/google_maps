@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_maps/view/map_view/provider/map_provider.dart';
+import 'package:google_maps/view/provider/map_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'components/location_direction_services.dart';
 import 'components/search_field.dart';
-import 'package:flutter_config/flutter_config.dart';
 
 class MapScreen extends StatelessWidget {
   MapScreen({super.key}); //, required this.networkInfo

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../view/directions_view/directions_view.dart';
-import '../../view/map_view/map_screen.dart';
+import '../../../view/directions_view/directions_view.dart';
+import '../../../view/map_view/map_screen.dart';
 import 'app_strings.dart';
 
 abstract class Routes {

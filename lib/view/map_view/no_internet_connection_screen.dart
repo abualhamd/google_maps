@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps/app/utils/app_strings.dart';
+import 'package:google_maps/app/core/utils/app_strings.dart';
 
 class NoInternetConnectionScreen extends StatelessWidget {
   const NoInternetConnectionScreen({super.key});

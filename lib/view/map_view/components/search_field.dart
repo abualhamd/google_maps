@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../../app/utils/values_manager.dart';
-import '../provider/map_provider.dart';
+import '../../../app/core/utils/values_manager.dart';
+import '../../provider/map_provider.dart';
 
 class MySearchField extends StatelessWidget {
   const MySearchField({
@@ -24,11 +24,12 @@ class MySearchField extends StatelessWidget {
           vertical: width * ValuesManager.s0_05),
       child: TextField(
         controller: _kDestinationController,
-        onSubmitted: ((value) async {
+        onSubmitted: ((location) async {
           // TODO
-          if (value.isNotEmpty) {
-            LatLng latLng = await provider.getPlace(value);
-            provider.goToPlace(latLng: latLng);
+          if (location.isNotEmpty) {
+            // LatLng latLng = await provider.getPlace(value);
+            // provider.goToPlace(latLng: latLng);
+            await provider.gotoInputLocation(location: location);
           }
         }),
       ),

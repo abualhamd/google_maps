@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../app/utils/colors_manager.dart';
-import '../../../app/utils/values_manager.dart';
+import '../../../app/core/utils/colors_manager.dart';
+import '../../../app/core/utils/values_manager.dart';
 
 class MyLocationInputField extends StatelessWidget {
   const MyLocationInputField({

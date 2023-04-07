@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps/app/extensions/position_extension.dart';
-import 'package:google_maps/app/extensions/material_state_property_extension.dart';
+import 'package:google_maps/app/core/extensions/position_extension.dart';
+import 'package:google_maps/app/core/extensions/material_state_property_extension.dart';
 
-import '../../../app/utils/colors_manager.dart';
-import '../../../app/utils/routes_manager.dart';
-import '../../../app/utils/values_manager.dart';
-import '../provider/map_provider.dart';
+import '../../../app/core/utils/colors_manager.dart';
+import '../../../app/core/utils/routes_manager.dart';
+import '../../../app/core/utils/values_manager.dart';
+import '../../provider/map_provider.dart';
 
 class DirectionLocationServices extends StatelessWidget {
   const DirectionLocationServices({
@@ -24,8 +24,7 @@ class DirectionLocationServices extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () async {
-            final position = await provider.getCurrentPosition();
-            await provider.goToPlace(latLng: position.getLatLng);
+            await provider.gotoCurrentLocation();
           },
           child: CircleAvatar(
             radius: width * ValuesManager.s0_065,

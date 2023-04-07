@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps/app/utils/app_strings.dart';
-import 'package:google_maps/app/utils/colors_manager.dart';
-import 'package:google_maps/app/utils/values_manager.dart';
-import 'package:google_maps/view/map_view/provider/map_provider.dart';
+import 'package:google_maps/app/core/utils/app_strings.dart';
+import 'package:google_maps/app/core/utils/colors_manager.dart';
+import 'package:google_maps/app/core/utils/values_manager.dart';
+import 'package:google_maps/view/provider/map_provider.dart';
 
 import 'components/location_input_field.dart';
 
