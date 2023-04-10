@@ -4,6 +4,8 @@ import 'package:google_maps/app/core/utils/colors_manager.dart';
 import 'package:google_maps/app/core/utils/values_manager.dart';
 import 'package:google_maps/view/provider/map_provider.dart';
 
+import '../../app/core/enums/enums.dart';
+import 'components/bottom_appbar.dart';
 import 'components/location_input_field.dart';
 
 class DirectinsScreen extends StatelessWidget {
@@ -15,7 +17,8 @@ class DirectinsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    MapProvider provider = MapProvider.get(context);
+    final provider = MapProvider.get(context);
+    TransportationMode mode = TransportationMode.driving;
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -31,8 +34,11 @@ class DirectinsScreen extends StatelessWidget {
               if (_originController.text.isNotEmpty &&
                   _destinationController.text.isNotEmpty) {
                 await provider.getPolyLine(
-                    origin: _originController.text,
-                    destination: _destinationController.text);
+                  origin: _originController.text,
+                  destination: _destinationController.text,
+                  transportationMode: mode,
+                );
+                FocusScope.of(context).unfocus();
                 Navigator.pop(context);
               }
             },
@@ -57,13 +63,27 @@ class DirectinsScreen extends StatelessWidget {
                       controller: _originController,
                       hintText: AppStrings.enterOrigin,
                     ),
-                    SizedBox(
-                      height: width * ValuesManager.s0_02,
-                    ),
+                    // SizedBox(
+                    //   height: width * ValuesManager.s0_006,
+                    // ),
                     //? distination
                     MyLocationInputField(
                       controller: _destinationController,
                       hintText: AppStrings.enterDestination,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: CustomBottomAppBar(
+                          icons: const [
+                            Icons.car_rental_sharp,
+                            Icons.nordic_walking_outlined,
+                            Icons.pedal_bike,
+                            Icons.emoji_transportation_outlined,
+                          ],
+                          onTap: (index) {
+                            mode = TransportationMode.values[index];
+                            // print(index);
+                          }),
                     ),
                   ],
                 ),

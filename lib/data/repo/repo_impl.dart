@@ -1,4 +1,4 @@
-import 'package:geolocator/geolocator.dart';
+import 'package:google_maps/app/core/enums/enums.dart';
 import 'package:google_maps/app/core/errors/exceptions.dart';
 import 'package:google_maps/app/core/errors/failures.dart';
 
@@ -45,10 +45,10 @@ class RepoImpl implements Repo {
 
   @override
   Future<Either<Failure, DirectionsEntity>> getDirections(
-      {required String origin, required String destination}) async {
+      {required String origin, required String destination,required TransportationMode transportationMode}) async {
     try {
       final model = await _remoteDataSource.getDirections(
-          origin: origin, destination: destination);
+          origin: origin, destination: destination, transportationMode: transportationMode);
       return Right(model.toDomain());
     } on GetDirectionsException {
       return Left(GetDirectionsFailure());

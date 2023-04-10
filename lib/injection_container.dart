@@ -4,8 +4,8 @@ import 'package:google_maps/data/data%20sources/local_data_source.dart';
 import 'package:google_maps/data/data%20sources/remote_data_source.dart';
 import 'package:google_maps/data/repo/repo_impl.dart';
 import 'package:google_maps/domain/usecases/local/get_current_location_usecase.dart';
-import 'package:google_maps/domain/usecases/remote/get_Input_loaction_usecase.dart';
-import 'package:google_maps/domain/usecases/remote/get_directions_usecase.dart';
+import 'package:google_maps/domain/usecases/remote/input_loaction_usecase.dart';
+import 'package:google_maps/domain/usecases/remote/directions_usecase.dart';
 import 'package:google_maps/view/provider/map_provider.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
 abstract class LocalDataSource {
@@ -13,7 +14,7 @@ class LocalDataSourceImpl implements LocalDataSource{
         .then((value) => null)
         .onError((error, stackTrace) async {
       await Geolocator.requestPermission();
-      print('Error: $error');
+      debugPrint('Error: $error');
     });
     return await Geolocator.getCurrentPosition();
   }

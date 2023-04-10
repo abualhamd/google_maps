@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps/app/core/extensions/position_extension.dart';
 import 'package:google_maps/app/core/extensions/material_state_property_extension.dart';
 
 import '../../../app/core/utils/colors_manager.dart';
@@ -39,7 +38,6 @@ class DirectionLocationServices extends StatelessWidget {
           height: width * ValuesManager.s0_05,
         ),
         SizedBox(
-          // TODO
           height: 2 * width * ValuesManager.s0_063,
           width: 2 * width * ValuesManager.s0_065,
           child: ElevatedButton(

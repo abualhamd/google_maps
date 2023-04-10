@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../app/core/utils/values_manager.dart';
 import '../../provider/map_provider.dart';
 

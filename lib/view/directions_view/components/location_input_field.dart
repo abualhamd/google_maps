@@ -25,7 +25,7 @@ class MyLocationInputField extends StatelessWidget {
     );
 
     return SizedBox(
-      height: width * ValuesManager.s0_15,
+      height: width * ValuesManager.s0_1,
       child: TextFormField(
         decoration: InputDecoration(
           hintText: _hintText,

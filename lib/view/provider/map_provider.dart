@@ -1,19 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_config/flutter_config.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps/domain/usecases/local/get_current_location_usecase.dart';
-import 'package:google_maps/domain/usecases/remote/get_Input_loaction_usecase.dart';
-import 'package:google_maps/domain/usecases/remote/get_directions_usecase.dart';
+import 'package:google_maps/domain/usecases/remote/input_loaction_usecase.dart';
+import 'package:google_maps/domain/usecases/remote/directions_usecase.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../app/core/networking/api/end_points.dart';
+import '../../app/core/enums/enums.dart';
 import '../../app/core/networking/network_info.dart';
-import 'package:http/http.dart' as http;
 
 import '../../app/core/usecase/usecase.dart';
 
@@ -78,11 +72,11 @@ class MapProvider with ChangeNotifier {
   }
 
   Future getPolyLine(
-      {required String origin, required String destination}) async {
+      {required String origin, required String destination, required, required TransportationMode transportationMode}) async {
     _setShowLoading(true);
 
     final result = await _directionsUseCase.call(
-        params: DirectionsParams(origin: origin, destination: destination));
+        params: DirectionsParams(origin: origin, destination: destination, trasnportationMode: transportationMode));
     result.fold((failure) {
       // TODO handle failure
     }, (directionsEntity) async {
@@ -90,7 +84,7 @@ class MapProvider with ChangeNotifier {
       polyLines.clear();
       polyLines.add(Polyline(
         color: Colors.deepPurple,
-        polylineId: PolylineId('temp'),
+        polylineId: const PolylineId('temp'),
         points: directionsEntity.polyPoints,
       ));
       //? destination marker
