@@ -24,6 +24,7 @@ class _CustomBottomAppBarState extends State<CustomBottomAppBar> {
     for (int i = 0; i < widget.icons.length; i++) {
       final iconWidget = InkResponse(
           onTap: () {
+            // TODO use provider
             setState(() {
               currentIndex = i;
               widget.onTap(i);
@@ -35,7 +36,8 @@ class _CustomBottomAppBarState extends State<CustomBottomAppBar> {
                   : ColorsManager.blue));
       iconWidgets.add(iconWidget);
     }
+
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: iconWidgets, );
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: iconWidgets,);
   }
 }

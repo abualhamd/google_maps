@@ -20,8 +20,8 @@ class MapProvider with ChangeNotifier {
   final NetworkInfo _networkInfo;
   Set<Polyline> polyLines = {};
   Set<Marker> markers = {};
+  MapType mapType = MapType.normal;
   CameraTargetBounds cameraBounds = CameraTargetBounds.unbounded;
-  // late Widget propperScreen; // = NoInternetConnectionScreen();
   final CurrentLocationUseCase _currentLocationUseCase;
   final InputLocationUseCase _inputLocationUseCase;
   final DirectionsUseCase _directionsUseCase;
@@ -36,6 +36,11 @@ class MapProvider with ChangeNotifier {
         _inputLocationUseCase = inputLocationUseCase,
         _directionsUseCase = directionsUseCase;
 
+  void setMapType(MapType type) {
+    mapType = type;
+    notifyListeners();
+  }
+
   void _setShowLoading(bool cond) {
     showLoading = cond;
     notifyListeners();
@@ -44,6 +49,7 @@ class MapProvider with ChangeNotifier {
   Future<void> _goToPlace({required LatLng latLng}) async {
     _setShowLoading(true);
 
+    polyLines.clear();
     markers.clear();
     markers.add(Marker(markerId: const MarkerId('markerId'), position: latLng));
     final GoogleMapController controller = await mapController.future;
@@ -72,11 +78,17 @@ class MapProvider with ChangeNotifier {
   }
 
   Future getPolyLine(
-      {required String origin, required String destination, required, required TransportationMode transportationMode}) async {
+      {required String origin,
+      required String destination,
+      required,
+      required TransportationMode transportationMode}) async {
     _setShowLoading(true);
 
     final result = await _directionsUseCase.call(
-        params: DirectionsParams(origin: origin, destination: destination, trasnportationMode: transportationMode));
+        params: DirectionsParams(
+            origin: origin,
+            destination: destination,
+            trasnportationMode: transportationMode));
     result.fold((failure) {
       // TODO handle failure
     }, (directionsEntity) async {

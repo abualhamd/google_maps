@@ -7,4 +7,9 @@ abstract class AppStrings {
 
   static const String enterOrigin = 'Enter Origin';
   static const String enterDestination = 'Enter Destination';
+
+  static const String mapType = 'Map Type';
+  static const String mapTypeSatellite = 'Satellite';
+  static const String mapTypeNormal = 'Default';
+  static const String mapTypeTerrain = 'Terrain';
 }

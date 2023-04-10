@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps/app/core/utils/colors_manager.dart';
+import 'package:google_maps/app/core/utils/values_manager.dart';
 import 'package:google_maps/view/provider/map_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'components/bottom_sheet.dart';
 import 'components/location_direction_services.dart';
 import 'components/search_field.dart';
 
@@ -42,7 +45,7 @@ class MapScreen extends StatelessWidget {
               cameraTargetBounds: provider.cameraBounds,
               polylines: provider.polyLines,
               markers: provider.markers,
-              mapType: MapType.hybrid,
+              mapType: provider.mapType,
               initialCameraPosition: _kGooglePlex,
               onMapCreated: (GoogleMapController controller) {
                 provider.mapController.complete(controller);
@@ -56,10 +59,34 @@ class MapScreen extends StatelessWidget {
               kDestinationController: _kDestinationController,
               provider: provider,
             ),
+            Positioned(
+              top: width * ValuesManager.s0_25,
+              right: width * ValuesManager.s0_05,
+              child: InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return CustomButtomSheet(width: width);
+                      });
+                },
+                child: const CircleAvatar(
+                  backgroundColor: ColorsManager.white,
+                  child: Icon(
+                    Icons.layers_outlined,
+                    color: ColorsManager.black,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              right: width * ValuesManager.s0_05,
+              bottom: width * ValuesManager.s0_05,
+              child:
+                  DirectionLocationServices(provider: provider, width: width),
+            ),
           ],
         ),
-        floatingActionButton:
-            DirectionLocationServices(provider: provider, width: width),
       ),
     );
   }
