@@ -6,7 +6,9 @@ import '../../app/core/networking/api/end_points.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../../domain/entities/suggested_location_entity.dart';
 import '../models/directions_model.dart';
+import '../models/suggested_location_model.dart';
 
 abstract class RemoteDataSource {
   Future<LatLng> getInputLocation({required String location});
@@ -14,6 +16,8 @@ abstract class RemoteDataSource {
       {required String origin,
       required String destination,
       required TransportationMode transportationMode});
+  Future<List<SuggestedLocationModel>> getSuggestedLocation(
+      {required String query});
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -65,10 +69,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     return json['candidates'][0]['place_id'];
   }
 
-  @override
-  Future<LatLng> getInputLocation({required String location}) async {
-    String placeId = await _getPlaceId(location);
-
+  Future<Map<String, dynamic>> _getPlaceDetails(
+      {required String placeId}) async {
     Uri uri = Uri.parse(
       EndPoints.placeDetails,
     ).replace(queryParameters: {
@@ -76,11 +78,52 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       'place_id': placeId,
     });
     http.Response response = await http.get(uri);
-    Map<String, dynamic> json = jsonDecode(response.body);
+    return jsonDecode(response.body);
+  }
+
+  Future<LatLng> _getLatLngFromPlaceId({required String placeId}) async {
+    Map<String, dynamic> json = await _getPlaceDetails(placeId: placeId);
     Map<String, dynamic> result = json['result'];
 
     final double lat = result['geometry']['location']['lat'];
     final double lng = result['geometry']['location']['lng'];
     return LatLng(lat, lng);
+  }
+
+  @override
+  Future<LatLng> getInputLocation({required String location}) async {
+    String placeId = await _getPlaceId(location);
+
+    return await _getLatLngFromPlaceId(placeId: placeId);
+  }
+
+  @override
+  Future<List<SuggestedLocationModel>> getSuggestedLocation(
+      {required String query}) async {
+    Uri uri = Uri.parse(
+      EndPoints.queryautocomplete,
+    ).replace(queryParameters: {
+      'key': _apiKey,
+      'input': query,
+    });
+
+    http.Response response = await http.get(uri);
+    Map<String, dynamic> json = jsonDecode(response.body);
+
+    final List<SuggestedLocationModel> predictions = [];
+    for (final e in json['predictions']) {
+      final String? placeId = e['place_id'];
+      
+      if(placeId != null){
+        final latLng =
+          await _getLatLngFromPlaceId(placeId: placeId);
+      final String mainText = e['structured_formatting']['main_text'];
+      final String? secondaryText = e['structured_formatting']['secondary_text'];
+      predictions.add(
+          SuggestedLocationModel(name: mainText, description: secondaryText, location: latLng));
+      }
+    }
+
+    return predictions;
   }
 }

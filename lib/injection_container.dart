@@ -6,6 +6,7 @@ import 'package:google_maps/data/repo/repo_impl.dart';
 import 'package:google_maps/domain/usecases/local/get_current_location_usecase.dart';
 import 'package:google_maps/domain/usecases/remote/input_loaction_usecase.dart';
 import 'package:google_maps/domain/usecases/remote/directions_usecase.dart';
+import 'package:google_maps/domain/usecases/remote/suggested_location_usecase.dart';
 import 'package:google_maps/view/provider/map_provider.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -16,10 +17,12 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // providers
   sl.registerLazySingleton<MapProvider>(() => MapProvider(
-      networkInfo: sl(),
-      directionsUseCase: sl(),
-      inputLocationUseCase: sl(),
-      currentLocationUseCase: sl()));
+        networkInfo: sl(),
+        directionsUseCase: sl(),
+        inputLocationUseCase: sl(),
+        currentLocationUseCase: sl(),
+        suggestedLocationUseCase: sl(),
+      ));
 
   // usecases
   sl.registerLazySingleton<DirectionsUseCase>(
@@ -28,6 +31,8 @@ Future<void> init() async {
       () => InputLocationUseCase(repo: sl()));
   sl.registerLazySingleton<CurrentLocationUseCase>(
       () => CurrentLocationUseCase(repo: sl()));
+  sl.registerLazySingleton<SuggestedLocationUseCase>(
+      () => SuggestedLocationUseCase(repo: sl()));
 
   // repos
   sl.registerLazySingleton<Repo>(

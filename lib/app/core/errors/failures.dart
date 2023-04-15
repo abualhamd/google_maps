@@ -10,3 +10,5 @@ class GetCurrentPositionFailure extends Failure {}
 class GetInputLocationFailure extends Failure {}
 
 class GetDirectionsFailure extends Failure {}
+
+class GetSuggestedLocationsFailure extends Failure {}

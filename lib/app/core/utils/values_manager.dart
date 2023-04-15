@@ -13,6 +13,7 @@ abstract class ValuesManager {
   static const double s0_15 = 0.15;
   static const double s0_18 = 0.18;
   static const double s0_25 = 0.25;
+  static const double s0_3 = 0.3;
   static const double s0_35 = 0.35;
   static const double s0_4 = 0.4;
   static const double s0_45 = 0.45;

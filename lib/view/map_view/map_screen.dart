@@ -8,7 +8,7 @@ import 'components/location_direction_services.dart';
 import 'components/search_field.dart';
 
 class MapScreen extends StatelessWidget {
-  MapScreen({super.key}); //, required this.networkInfo
+  const MapScreen({super.key}); //, required this.networkInfo
 
   // NetworkInfo networkInfo;
   // final Completer<GoogleMapController> _controller = Completer();
@@ -29,8 +29,6 @@ class MapScreen extends StatelessWidget {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
-
-  final TextEditingController _kDestinationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +54,6 @@ class MapScreen extends StatelessWidget {
             ),
             MySearchField(
               width: width,
-              kDestinationController: _kDestinationController,
               provider: provider,
             ),
             Positioned(

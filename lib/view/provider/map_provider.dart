@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps/domain/usecases/local/get_current_location_usecase.dart';
 import 'package:google_maps/domain/usecases/remote/input_loaction_usecase.dart';
 import 'package:google_maps/domain/usecases/remote/directions_usecase.dart';
+import 'package:google_maps/domain/usecases/remote/suggested_location_usecase.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ import '../../app/core/enums/enums.dart';
 import '../../app/core/networking/network_info.dart';
 
 import '../../app/core/usecase/usecase.dart';
+import '../../domain/entities/suggested_location_entity.dart';
 
 class MapProvider with ChangeNotifier {
   static MapProvider get(BuildContext context) =>
@@ -22,19 +24,31 @@ class MapProvider with ChangeNotifier {
   Set<Marker> markers = {};
   MapType mapType = MapType.normal;
   CameraTargetBounds cameraBounds = CameraTargetBounds.unbounded;
+  final TextEditingController destinationController = TextEditingController();
+  List<SuggestedLocationEntity> _suggestedLocations = [];
   final CurrentLocationUseCase _currentLocationUseCase;
   final InputLocationUseCase _inputLocationUseCase;
   final DirectionsUseCase _directionsUseCase;
+  final SuggestedLocationUseCase _suggestedLocationUseCase;
 
-  MapProvider(
-      {required NetworkInfo networkInfo,
-      required CurrentLocationUseCase currentLocationUseCase,
-      required InputLocationUseCase inputLocationUseCase,
-      required DirectionsUseCase directionsUseCase})
-      : _networkInfo = networkInfo,
+  MapProvider({
+    required NetworkInfo networkInfo,
+    required CurrentLocationUseCase currentLocationUseCase,
+    required InputLocationUseCase inputLocationUseCase,
+    required DirectionsUseCase directionsUseCase,
+    required SuggestedLocationUseCase suggestedLocationUseCase,
+  })  : _networkInfo = networkInfo,
         _currentLocationUseCase = currentLocationUseCase,
         _inputLocationUseCase = inputLocationUseCase,
-        _directionsUseCase = directionsUseCase;
+        _directionsUseCase = directionsUseCase,
+        _suggestedLocationUseCase = suggestedLocationUseCase;
+
+  List<SuggestedLocationEntity> get suggestedLocations => _suggestedLocations;
+  void clearSuggestedLocations() {
+    destinationController.clear();
+    _suggestedLocations = [];
+    notifyListeners();
+  }
 
   void setMapType(MapType type) {
     mapType = type;
@@ -46,7 +60,7 @@ class MapProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _goToPlace({required LatLng latLng}) async {
+  Future<void> navigateToLocation({required LatLng latLng}) async {
     _setShowLoading(true);
 
     polyLines.clear();
@@ -63,7 +77,7 @@ class MapProvider with ChangeNotifier {
     response.fold((failure) {
       // TODO handle failure
     }, (currentLocationLatLng) async {
-      await _goToPlace(latLng: currentLocationLatLng);
+      await navigateToLocation(latLng: currentLocationLatLng);
     });
   }
 
@@ -73,11 +87,11 @@ class MapProvider with ChangeNotifier {
     response.fold((failure) {
       // TODO handle failure
     }, (inputLocationLatLng) async {
-      await _goToPlace(latLng: inputLocationLatLng);
+      await navigateToLocation(latLng: inputLocationLatLng);
     });
   }
 
-  Future getPolyLine(
+  Future<void> getPolyLine(
       {required String origin,
       required String destination,
       required,
@@ -127,6 +141,17 @@ class MapProvider with ChangeNotifier {
     // notifyListeners();
   }
 
+  Future<void> getSuggestedLocations({required String query}) async {
+    final result = await _suggestedLocationUseCase.call(
+        params: SuggestedLocationParams(query: query));
+
+    result.fold((failure) {
+      // TODO handle failure
+    }, (suggestedLocationsList) {
+      _suggestedLocations = suggestedLocationsList;
+      notifyListeners();
+    });
+  }
   // Future getGeoCode() async {
   //   Uri uri = Uri.parse(EndPoints.geoCode)
   //       .replace(queryParameters: {'latlng': '40,-110'});

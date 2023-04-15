@@ -56,7 +56,7 @@ class DirectionLocationServices extends StatelessWidget {
               color: ColorsManager.white,
             ),
             onPressed: () async {
-              Navigator.of(context).pushNamed(Routes.directionsRoutes);
+              Navigator.of(context).pushNamed(Routes.directionsRoute);
             },
           ),
         ),
