@@ -113,14 +113,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     final List<SuggestedLocationModel> predictions = [];
     for (final e in json['predictions']) {
       final String? placeId = e['place_id'];
-      
-      if(placeId != null){
-        final latLng =
-          await _getLatLngFromPlaceId(placeId: placeId);
-      final String mainText = e['structured_formatting']['main_text'];
-      final String? secondaryText = e['structured_formatting']['secondary_text'];
-      predictions.add(
-          SuggestedLocationModel(name: mainText, description: secondaryText, location: latLng));
+
+      if (placeId != null) {
+        final latLng = await _getLatLngFromPlaceId(placeId: placeId);
+        final String mainText = e['structured_formatting']['main_text'];
+        final String? secondaryText =
+            e['structured_formatting']['secondary_text'];
+        predictions.add(SuggestedLocationModel(
+            name: mainText, description: secondaryText, location: latLng));
       }
     }
 

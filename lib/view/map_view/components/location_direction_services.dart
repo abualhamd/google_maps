@@ -21,6 +21,7 @@ class DirectionLocationServices extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        //? current location
         GestureDetector(
           onTap: () async {
             await provider.gotoCurrentLocation();
@@ -37,27 +38,26 @@ class DirectionLocationServices extends StatelessWidget {
         SizedBox(
           height: width * ValuesManager.s0_05,
         ),
-        SizedBox(
-          height: 2 * width * ValuesManager.s0_063,
-          width: 2 * width * ValuesManager.s0_065,
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: ColorsManager.blue.getMaterialStateProperty,
-              shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
+        //? directions
+        GestureDetector(
+          onTap: () => Navigator.of(context).pushNamed(Routes.directionsRoute),
+          child: Material(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(width * ValuesManager.s0_025)),
+            child: Container(
+              height: 2 * width * ValuesManager.s0_063,
+              width: 2 * width * ValuesManager.s0_065,
+              decoration: BoxDecoration(
+                  color: ColorsManager.blue,
                   borderRadius:
-                      BorderRadius.circular(width * ValuesManager.s0_025),
-                ),
+                      BorderRadius.circular(width * ValuesManager.s0_025)),
+              child: const Icon(
+                Icons.directions_outlined,
+                color: ColorsManager.white,
               ),
             ),
-            // TODO
-            child: const Icon(
-              Icons.directions_outlined,
-              color: ColorsManager.white,
-            ),
-            onPressed: () async {
-              Navigator.of(context).pushNamed(Routes.directionsRoute);
-            },
           ),
         ),
         SizedBox(

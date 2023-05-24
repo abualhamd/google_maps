@@ -66,6 +66,7 @@ class SearchScreen extends StatelessWidget {
                         // borderSide: BorderSide(width: ValuesManager.s2),
                         borderRadius: BorderRadius.circular(15),
                       ),
+                    
                     ),
                   ),
               ),
